@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:newsapp/features/authchecker/view/authcheckerscreen.dart';
+import 'package:newsapp/features/onboarding/view/onboarding.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) {
-            return Authcheckerscreen();
+            return Onboarding();
           },
         ),
       );

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:newsapp/features/onboarding/view/onboarding2.dart';
 
-class Authcheckerscreen extends StatelessWidget {
-  const Authcheckerscreen({super.key});
+class Onboarding extends StatelessWidget {
+  const Onboarding({super.key});
   @override
   Widget build(BuildContext context) {
     final double statusbarheight = MediaQuery.of(context).padding.top;
@@ -25,7 +26,18 @@ class Authcheckerscreen extends StatelessWidget {
           Center(
             child: Container(
               margin: EdgeInsets.only(bottom: 50),
-              child: ElevatedButton(onPressed: () {}, child: Text("Begin")),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return Onboarding2();
+                      },
+                    ),
+                  );
+                },
+                child: Text("Begin"),
+              ),
             ),
           ),
         ],
