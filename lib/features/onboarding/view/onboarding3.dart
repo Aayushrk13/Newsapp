@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:newsapp/features/onboarding/view/onboarding3.dart';
+import 'package:newsapp/features/home/view/homescreen.dart';
 
-class Onboarding2 extends StatelessWidget {
-  const Onboarding2({super.key});
+class Onboarding3 extends StatelessWidget {
+  const Onboarding3({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class Onboarding2 extends StatelessWidget {
           //row is used here to align the image to the left of the scereen
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [Image.asset("assets/auth_image/onboarding2.png")],
+            children: [Image.asset("assets/auth_image/onboarding3.png")],
           ),
           Container(
             height: 360,
@@ -29,13 +29,13 @@ class Onboarding2 extends StatelessWidget {
                   TextSpan(
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
                     children: [
-                      TextSpan(text: "Editor's\n"),
-                      TextSpan(text: "Hand-Picked"),
+                      TextSpan(text: "Thoughtful and\n"),
+                      TextSpan(text: "Focused"),
                     ],
                   ),
                 ),
                 Text(
-                  "Stay informed with expertly curated news from trusted sources. Our editors select the most relevant and insightful stories daily, ensuring you get the best coverage across politics, tech, business, entertainment, and more.",
+                  "Stay informed with a news app that is both thoughtful and focused—delivering carefully curated, in-depth stories that matter, without the noise. Get the latest updates with clarity, accuracy, and relevance.",
                   textAlign: TextAlign.center,
                 ),
                 ElevatedButton(
@@ -43,7 +43,7 @@ class Onboarding2 extends StatelessWidget {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) {
-                          return Onboarding3();
+                          return HomeScreen();
                         },
                       ),
                     );

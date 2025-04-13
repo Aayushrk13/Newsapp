@@ -2,7 +2,8 @@
     <application
         android:label="newsapp"
         android:name="${applicationName}"
-        android:icon="@mipmap/newslogo">
+        android:icon="@mipmap/newslogo"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"
