@@ -1,8 +1,18 @@
-import 'package:flutter/material.dart';
-import 'newsblock.dart';
+import 'dart:ffi';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'newsblock.dart';
+import 'package:newsapp/features/home/providers/newsprovider.dart';
+
+class HomeScreen extends ConsumerStatefulWidget {
+  HomeScreen({super.key});
+
+  @override
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   String whichmonth(num) {
     if (num == 1) return "January";
     if (num == 2) return "February";
@@ -30,6 +40,7 @@ class HomeScreen extends StatelessWidget {
     return 'Not possible';
   }
 
+  final TextEditingController searchcontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final double statusbarheight = MediaQuery.of(context).padding.top;
@@ -46,14 +57,17 @@ class HomeScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: statusbarheight),
               child: Row(
-                mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Text(
                     "News",
                     style: TextStyle(fontSize: 36, fontWeight: FontWeight.w900),
                   ),
-                  IconButton(onPressed: (){}, icon: Icon(Icons.bookmark_outline))
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.bookmark_outline),
+                  ),
                 ],
               ),
             ),
@@ -76,11 +90,23 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ), //the current date and day should be here
-            Text(
-              "Headlines",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            SizedBox(
+              height: 50,
+              child: TextField(
+                controller: searchcontroller,
+                onSubmitted: (val) {
+                  FocusScope.of(context).unfocus();
+                  ref.read(articleprovider).searchnews(val);
+                },
+                decoration: InputDecoration(
+                  hintText: "Search",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+              ),
             ),
-            SizedBox(height: 600, width: 500, child: NewsBlock()),
+            Flexible(child: NewsBlock()),
           ],
         ),
       ),

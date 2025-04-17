@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:newsapp/features/article/articleblock.dart';
+import 'package:newsapp/features/home/providers/bookmarkprovider.dart';
+import 'package:newsapp/features/home/model/articlemodel.dart';
 import 'package:newsapp/features/home/providers/newsprovider.dart';
 import 'package:newsapp/core/api_enum.dart';
 
@@ -11,8 +13,6 @@ class NewsBlock extends ConsumerStatefulWidget {
 }
 
 class _NewsBlockState extends ConsumerState<NewsBlock> {
-  final obj = Newsprovider();
-
   @override
   void initState() {
     super.initState();
@@ -24,10 +24,19 @@ class _NewsBlockState extends ConsumerState<NewsBlock> {
   @override
   Widget build(BuildContext context) {
     final articlestate = ref.watch(articleprovider);
-    toggle_bookmark(){
+    toggle_bookmark(index) {
       //TODO switch betn icons for the bookmark toggle
       //toggle based on the shared preferences to add and remove articles from here and they can also be removed from bookmark page
+      Articlemodel savedarticle = articlestate.articles[index];
+      savedarticle.mark = !savedarticle.mark;
+      // ref.read(bookmarkprovider).handle_serialize(articlestate.articles[index]);
+      if (savedarticle.mark) {
+        ref.watch(articleprovider).saved_articles.put(1, savedarticle);
+      } else {
+        ref.read(articleprovider).saved_articles.delete(1);
+      }
     }
+
     void openarticle(index) {
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -61,11 +70,11 @@ class _NewsBlockState extends ConsumerState<NewsBlock> {
           children: List.generate(
             articlestate.articles.length,
             (index) => GestureDetector(
-              onTap: () =>{
-                if (articlestate.articles[index].url != null) {
-                  openarticle(index)
-                }
-              },
+              onTap:
+                  () => {
+                    if (articlestate.articles[index].url != null)
+                      {openarticle(index)},
+                  },
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 padding: EdgeInsets.all(8),
@@ -104,10 +113,25 @@ class _NewsBlockState extends ConsumerState<NewsBlock> {
                       maxLines: 5,
                       overflow: TextOverflow.ellipsis,
                     ),
+                    Text(
+                      articlestate.articles[index].publisher != null ||
+                              articlestate.articles[index].publisher != ''
+                          ? "Published by: ${articlestate.articles[index].publisher}"
+                          : '',
+                      style: TextStyle(fontSize: 12, color: Colors.grey[500]),
+                    ),
                     Container(
                       alignment: Alignment.centerRight,
-                      child: IconButton(onPressed: (){}, icon:Icon(Icons.bookmark_add_outlined)),
-                    )
+                      child: IconButton(
+                        onPressed: () {
+                          toggle_bookmark(index);
+                        },
+                        icon:
+                            articlestate.articles[index].mark
+                                ? Icon(Icons.bookmark)
+                                : Icon(Icons.bookmark_add_outlined),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -115,32 +139,5 @@ class _NewsBlockState extends ConsumerState<NewsBlock> {
           ),
         );
     }
-    // return SizedBox(
-    //   height: 400,
-    //   width: 200,
-    //   child: Container(
-    //     color: Color(0xffECF4F6),
-    //     child: Column(
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //       children: [
-    //         SizedBox(
-    //           height: 200,
-    //           width: 400,
-    //           child: Placeholder(child: Text("Here goes the image")),
-    //         ),
-    //         Text(
-    //           articlestate.articles[0].title ?? '',
-    //           style: TextStyle(fontSize: 30),
-    //         ),
-    //         Text(
-    //           "This is the block for the news space for the newsdata from the api",
-    //           maxLines: 5,
-    //           overflow: TextOverflow.ellipsis,
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }

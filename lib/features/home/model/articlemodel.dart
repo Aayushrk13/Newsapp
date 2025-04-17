@@ -6,6 +6,7 @@ class Articlemodel {
   String? url;
   String? imgurl;
   String? content;
+  bool mark;
 
   Articlemodel({
     this.publisher,
@@ -15,6 +16,7 @@ class Articlemodel {
     this.imgurl,
     this.title,
     this.url,
+    this.mark=false,
   });
 
   factory Articlemodel.fromJson(Map<String, dynamic> data) => Articlemodel(
