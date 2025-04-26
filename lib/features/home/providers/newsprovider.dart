@@ -8,10 +8,31 @@ import 'package:hive/hive.dart';
 
 final articleprovider = ChangeNotifierProvider((ref) => Newsprovider());
 
+var savedbox = Hive.box('newsbox');
+
 class Newsprovider extends ChangeNotifier {
   List<Articlemodel> articles = [];
   ApiState apistate = ApiState.initial;
-  var saved_articles = Hive.box('newsbox');
+
+  check_exist(Articlemodel ar) {
+    for (var key in savedbox.keys) {
+      if (savedbox.get(key).title == ar.title) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  update_mark(String title) {
+    for (var value in savedbox.values) {
+      if (value.title == title) {
+        value.mark = false;
+        break;
+      }
+    }
+    notifyListeners();
+  }
+
   Future<void> searchnews(keyword) async {
     final url = Uri.parse(
       'https://newsapi.org/v2/everything?sortBy=popularity&language=en&q=$keyword&searchIn=title&apiKey=93c89c22cf454b829e0124268089e6c9',
@@ -40,6 +61,7 @@ class Newsprovider extends ChangeNotifier {
   }
 
   Future<void> getnews() async {
+    savedbox.clear(); //remove after completion
     final url = Uri.parse(
       'https://newsapi.org/v2/top-headlines?language=en&apiKey=93c89c22cf454b829e0124268089e6c9',
     );

@@ -2,11 +2,12 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:newsapp/features/bookmark/bookmark.dart';
 import 'newsblock.dart';
 import 'package:newsapp/features/home/providers/newsprovider.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
@@ -65,7 +66,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     style: TextStyle(fontSize: 36, fontWeight: FontWeight.w900),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context){
+                            return Bookmark();
+                          },
+                        ),
+                      );
+                    },
                     icon: Icon(Icons.bookmark_outline),
                   ),
                 ],
@@ -98,10 +107,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   FocusScope.of(context).unfocus();
                   ref.read(articleprovider).searchnews(val);
                 },
+                cursorColor: Colors.black,
                 decoration: InputDecoration(
                   hintText: "Search",
                   border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red),
                     borderRadius: BorderRadius.circular(5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black)
                   ),
                 ),
               ),

@@ -5,11 +5,6 @@ import 'package:newsapp/features/article/articleblock.dart';
 
 class Bookmark extends ConsumerStatefulWidget {
   const Bookmark({super.key});
-  handle_toggle_bookmark() {
-    //TODO handle the toggleing of bookmark from the newsblock from now
-    //use shared preferences to store the whole data locally
-    //show the articles on the basis of locally stored and remove them when toggled from here
-  }
   @override
   ConsumerState<Bookmark> createState() => _BookmarkState();
 }
@@ -26,6 +21,7 @@ class _BookmarkState extends ConsumerState<Bookmark> {
   @override
   Widget build(BuildContext context) {
     final bookmarkstate = ref.watch(bookmarkprovider);
+
     void openarticle(index) {
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -37,6 +33,19 @@ class _BookmarkState extends ConsumerState<Bookmark> {
     }
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.grey.shade300,
+        leading: ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.grey.shade300,
+            elevation: 0,
+          ),
+          child: Icon(Icons.arrow_back, color: Colors.black, size: 22),
+        ),
+      ),
       body: ListView(
         children: List.generate(
           bookmarkstate.savedarticles.length,
@@ -81,8 +90,8 @@ class _BookmarkState extends ConsumerState<Bookmark> {
                   ),
                   Text(
                     bookmarkstate.savedarticles[index].description ?? '',
-                    maxLines: 5,
-                    overflow: TextOverflow.ellipsis,
+                    maxLines: 8,
+                    // overflow: TextOverflow.ellipsis
                   ),
                   Text(
                     bookmarkstate.savedarticles[index].publisher != null ||
@@ -95,12 +104,9 @@ class _BookmarkState extends ConsumerState<Bookmark> {
                     alignment: Alignment.centerRight,
                     child: IconButton(
                       onPressed: () {
-                        // toggle_bookmark(index);
+                        ref.read(bookmarkprovider).deletearticle(index);
                       },
-                      icon:
-                          bookmarkstate.savedarticles[index].mark
-                              ? Icon(Icons.bookmark)
-                              : Icon(Icons.bookmark_add_outlined),
+                      icon: Icon(Icons.bookmark),
                     ),
                   ),
                 ],

@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:newsapp/features/article/articleblock.dart';
-import 'package:newsapp/features/home/providers/bookmarkprovider.dart';
 import 'package:newsapp/features/home/model/articlemodel.dart';
 import 'package:newsapp/features/home/providers/newsprovider.dart';
 import 'package:newsapp/core/api_enum.dart';
+import 'package:hive/hive.dart';
 
 class NewsBlock extends ConsumerStatefulWidget {
   const NewsBlock({super.key});
@@ -24,17 +24,27 @@ class _NewsBlockState extends ConsumerState<NewsBlock> {
   @override
   Widget build(BuildContext context) {
     final articlestate = ref.watch(articleprovider);
+
+    final articlebox = Hive.box('newsbox');
     toggle_bookmark(index) {
-      //TODO switch betn icons for the bookmark toggle
-      //toggle based on the shared preferences to add and remove articles from here and they can also be removed from bookmark page
       Articlemodel savedarticle = articlestate.articles[index];
-      savedarticle.mark = !savedarticle.mark;
-      // ref.read(bookmarkprovider).handle_serialize(articlestate.articles[index]);
-      if (savedarticle.mark) {
-        ref.watch(articleprovider).saved_articles.put(1, savedarticle);
-      } else {
-        ref.read(articleprovider).saved_articles.delete(1);
+      try {
+        if (articlestate.check_exist(savedarticle)) {
+          for (var key in articlebox.keys) {
+            if (savedarticle.title == articlebox.get(key).title) {
+              articlebox.delete(key);
+              articlestate.articles[index].mark = false;
+              break;
+            }
+          }
+        } else {
+          articlebox.add(savedarticle);
+          articlestate.articles[index].mark = true;
+        }
+      } catch (e) {
+        print('$e shit happen');
       }
+      setState(() {});
     }
 
     void openarticle(index) {
@@ -99,6 +109,7 @@ class _NewsBlockState extends ConsumerState<NewsBlock> {
                       child: Image.network(
                         articlestate.articles[index].imgurl ?? "",
                         errorBuilder: (context, error, stackTrace) {
+                          articlestate.articles[index].imgurl = "a";
                           return Image.asset("assets/logo/placeholder.png");
                         },
                         fit: BoxFit.cover,

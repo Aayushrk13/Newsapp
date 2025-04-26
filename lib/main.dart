@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:newsapp/features/home/model/articlemodel.dart';
 import 'package:newsapp/features/splashscreen/splashscreen.dart';
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() async {
-  await Hive.initFlutter();
-  var _box = Hive.openBox('newsbox');
+  WidgetsFlutterBinding.ensureInitialized();
+  final dir = await getApplicationDocumentsDirectory();
+  Hive.init(dir.path);
+  Hive.registerAdapter(ArticlemodelAdapter());
+  await Hive.openBox('newsbox');
   runApp(ProviderScope(child: MyApp()));
 }
 
