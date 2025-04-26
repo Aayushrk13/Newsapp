@@ -31,13 +31,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   String whichday(num) {
-    if (num == 1) return "Sunday";
-    if (num == 2) return "Monday";
-    if (num == 3) return "Tuesday";
-    if (num == 4) return "Wednesday";
-    if (num == 5) return "Thursday";
-    if (num == 6) return "Friday";
-    if (num == 7) return "Saturday";
+    if (num == 7) return "Sunday";
+    if (num == 1) return "Monday";
+    if (num == 2) return "Tuesday";
+    if (num == 3) return "Wednesday";
+    if (num == 4) return "Thursday";
+    if (num == 5) return "Friday";
+    if (num == 6) return "Saturday";
     return 'Not possible';
   }
 

@@ -35,15 +35,11 @@ class _BookmarkState extends ConsumerState<Bookmark> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey.shade300,
-        leading: ElevatedButton(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black, size: 22),
           onPressed: () {
             Navigator.of(context).pop();
           },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.grey.shade300,
-            elevation: 0,
-          ),
-          child: Icon(Icons.arrow_back, color: Colors.black, size: 22),
         ),
       ),
       body: ListView(

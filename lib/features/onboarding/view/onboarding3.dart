@@ -12,7 +12,7 @@ class Onboarding3 extends StatelessWidget {
           //row is used here to align the image to the left of the scereen
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [Image.asset("assets/auth_image/onboarding3.png")],
+            // children: [Image.asset("assets/auth_image/onboarding3.png")],
           ),
           Container(
             height: 360,
